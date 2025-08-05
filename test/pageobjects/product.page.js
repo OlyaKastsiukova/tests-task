@@ -26,9 +26,6 @@ class ProductPage extends Page {
     get productSortContainer() {
         return $('[data-test="product-sort-container"]');
     }
-    getRemoveButton (n) {
-        return $(`[data-test="inventory-item"]:nth-child(${n})`).$('[data-test^="remove-"]')
-    }
     getPrice (n) {
         return $(`[data-test="inventory-item"]:nth-child(${n})`).$('[data-test="inventory-item-price"]')
     }
