@@ -1,1 +1,3 @@
-# tests-task
+# To run tests:
+
+`npm test`
