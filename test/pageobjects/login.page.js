@@ -1,22 +1,24 @@
 const { $ } = require('@wdio/globals')
 const Page = require('./page');
 
-/**
- * sub page containing specific selectors and methods for a specific page
- */
 class LoginPage extends Page {
-    /**
-     * define selectors using getter methods
-     */
-    get inputUsername () {
+    get inputUsername() {
         return $('[data-test="username"]');
     }
 
-    get inputPassword () {
+    get inputUsernameCircle() {
+        return $('[data-test="username"] + svg');
+    }
+
+    get inputPassword() {
         return $('[data-test="password"]');
     }
 
-    get submitButton () {
+    get inputPasswordCircle() {
+        return $('[data-test="password"] + svg');
+    }
+
+    get submitButton() {
         return $('[data-test="login-button"]');
     }
 
@@ -24,21 +26,14 @@ class LoginPage extends Page {
         return $('[data-test="login-container"] [data-test="error"]');
     }
 
-    /**
-     * a method to encapsule automation code to interact with the page
-     * e.g. to login using username and password
-     */
-    async login (username, password) {
+    open() {
+        return super.open('');
+    }
+
+    async login(username, password) {
         await this.inputUsername.setValue(username);
         await this.inputPassword.setValue(password);
         await this.submitButton.click();
-    }
-
-    /**
-     * overwrite specific options to adapt it to page object
-     */
-    open () {
-        return super.open('');
     }
 }
 
