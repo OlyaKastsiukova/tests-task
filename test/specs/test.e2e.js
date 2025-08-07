@@ -31,6 +31,10 @@ describe('Login with invalid login', () => {
     before(async () => {
         await LoginPage.open();
     })
+    it('should data in the field password be as dots', async () => {
+        const inputType = await LoginPage.inputPassword.getAttribute('type');
+        expect(inputType).toBe('password');
+    })
     it('should log in with error use wrong password', async () => {
         await LoginPage.login('standarD_user', 'secret_sauce');
         expect(await LoginPage.inputUsernameCircle).toBeDisplayed();
@@ -50,9 +54,6 @@ describe('Login', () => {
         await LoginPage.open();
     })
     it('should log in successfully', async () => {
-        const inputType = await LoginPage.inputPassword.getAttribute('type');
-        expect(inputType).toBe('password');
-
         await LoginPage.login(USERNAME, PASSWORD);
         expect(await ProductListPage.inventoryContainer).toBeDisplayed();
         expect(await ProductListPage.shoppingCart).toBeDisplayed();
