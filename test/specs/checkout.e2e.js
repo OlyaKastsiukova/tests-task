@@ -23,6 +23,12 @@ describe('Checkout', () => {
         selectedPrice = await productListPage.getPriceText(ELEMENT_INDEX_TO_ADD);
         selectedItemTitleLink = await productListPage.getSelectedItemTitleAttr(ELEMENT_INDEX_TO_ADD);
 
+        // Saving the card after logout
+        await productListPage.openMenu();
+        await productListPage.logout();
+        await loginPage.login(USERNAME, PASSWORD);
+        await expect(await productListPage.shoppingCartBadge).toHaveText('1');
+
         // Navigate to cart and verify product
         await productListPage.openShoppingCart();
         const selectedItem = await checkoutPage.getElementByDataTest(selectedItemTitleLink);
