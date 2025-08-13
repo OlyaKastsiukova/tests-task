@@ -1,4 +1,3 @@
-const { $ } = require('@wdio/globals')
 const Page = require('./page');
 
 class LoginPage extends Page {
@@ -26,6 +25,10 @@ class LoginPage extends Page {
         return $('[data-test="login-container"] [data-test="error"]');
     }
 
+    get errorText() {
+        return this.getText(this.error);
+    }
+
     open() {
         return super.open('');
     }
@@ -34,6 +37,14 @@ class LoginPage extends Page {
         await this.inputUsername.setValue(username);
         await this.inputPassword.setValue(password);
         await this.submitButton.click();
+    }
+
+    async getErrorUserNameBorder() {
+        return await this.getCSSProperty(this.inputUsername, 'border-bottom-color');
+    }
+
+    async getErrorPasswordBorder() {
+        return await this.getCSSProperty(this.inputPassword, 'border-bottom-color');
     }
 }
 

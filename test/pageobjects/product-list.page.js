@@ -1,13 +1,8 @@
-const { $ } = require('@wdio/globals')
 const Page = require('./page');
 
 class ProductListPage extends Page {
     open() {
         return super.open('inventory.html');
-    }
-
-    get title() {
-        return $('[data-test="title"]');
     }
 
     get inventoryContainer() {
@@ -58,20 +53,24 @@ class ProductListPage extends Page {
         return $('[data-test="inventory-item"]');
     }
 
-    getRemoveFromCartButton(n) {
-        return $(`[data-test="inventory-item"]:nth-child(${n})`).$('button[data-test^="remove-"]')
-    }
-
     getAddToCartButton(n) {
         return $(`[data-test="inventory-item"]:nth-child(${n})`).$('[data-test^="add-to-cart-"]')
+    }
+
+    getPrice(n) {
+        return $(`[data-test="inventory-item"]:nth-child(${n})`).$('[data-test="inventory-item-price"]')
+    }
+
+    async openMenu() {
+        return this.menuButton.click();
     }
 
     async getSelectedItemTitleAttr(n) {
         return $(`[data-test="inventory-item"]:nth-child(${n})`).$('[data-test$="-title-link"]').getAttribute('data-test');
     }
 
-    getPrice(n) {
-        return $(`[data-test="inventory-item"]:nth-child(${n})`).$('[data-test="inventory-item-price"]')
+    async logout() {
+        return this.logoutSidebarLink.click();
     }
 
     async getProductNames() {
@@ -82,6 +81,26 @@ class ProductListPage extends Page {
     async getProductPrices() {
         const elements = await $$('[data-test="inventory-item-price"]');
         return elements.map(async e => parseFloat((await e.getText()).replace('$', '')));
+    }
+
+    async openShoppingCart() {
+        await this.click(this.shoppingCart);
+    }
+
+    async openCheckout() {
+        await this.click(this.checkoutButton);
+    }
+
+    async clickAddToCartButton(i) {
+        await this.getAddToCartButton(i).click();
+    }
+
+    async sortProducts(sortType) {
+        await this.selectByAttribute(this.productSortContainer, 'value', sortType);
+    }
+
+    async getPriceText(index) {
+        return await this.getText(this.getPrice(index));
     }
 
 }

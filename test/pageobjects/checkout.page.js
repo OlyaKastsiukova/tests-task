@@ -1,4 +1,3 @@
-const { $ } = require('@wdio/globals')
 const Page = require('./page');
 
 class CheckoutPage extends Page {
@@ -42,8 +41,39 @@ class CheckoutPage extends Page {
         return $('[data-test="checkout-info-container"] [data-test="error"]');
     }
 
+    get thanksOrderText() {
+        return 'Thank you for your order!';
+    }
+
     open() {
         return super.open('cart.html');
+    }
+
+    extractPriceFromText(text) {
+        const match = text.match(/\$\d+(\.\d{2})?/);
+        return match ? match[0] : null;
+    }
+
+    async fillCheckoutForm(firstName, lastName, postalCode) {
+        await this.setValue(this.firstNameInput, firstName);
+        await this.setValue(this.lastNameInput, lastName);
+        await this.setValue(this.postalCodeInput, postalCode);
+    }
+
+    async clickContinue() {
+        await this.click(this.continueButton);
+    }
+
+    async clickFinish() {
+        await this.click(this.finishButton);
+    }
+
+    async clickBackToProducts() {
+        await this.click(this.backButton);
+    }
+
+    async getSubTotalText() {
+        return await this.getText(this.subTotalLabel);
     }
 }
 
